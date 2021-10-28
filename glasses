@@ -4,8 +4,8 @@
 
 CONFIG=~/.alacritty.yml
 CURRENT=$(grep "^  size:" ${CONFIG}|cut -d ":" -f 2|cut -d " " -f 2)
-NORMAL=17.0
-GLASSES_OFF=26.5
+NORMAL=12.5
+GLASSES_OFF=27.0
 
 if [ $CURRENT == $NORMAL ]; then
     NEW_SIZE=$GLASSES_OFF
@@ -13,4 +13,4 @@ else
     NEW_SIZE=$NORMAL
 fi
 
-sed -i "" -e "s/  size: .*/  size: ${NEW_SIZE}/" ${CONFIG} # tested at macos
+sed -i "s/  size: .*/  size: ${NEW_SIZE}/" ${CONFIG} # tested at macos
