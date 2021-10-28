@@ -2,7 +2,7 @@
 
 PATH=$PATH:/sbin
 
-if [ ! -x `which pv` ]; then
+if [[ ! -x `which pv 2>/dev/null` ]]; then
     echo 'ERROR: pv not found'
     exit -1
 elif [[ $# < 2 ]]; then

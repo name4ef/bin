@@ -5,7 +5,12 @@
 CONFIG=~/.alacritty.yml
 CURRENT=$(grep "^  size:" ${CONFIG}|cut -d ":" -f 2|cut -d " " -f 2)
 NORMAL=12.5
-GLASSES_OFF=27.0
+
+if [ "$1" == "-B" ]; then # for Big monitor
+    GLASSES_OFF=72.5
+else
+    GLASSES_OFF=27
+fi
 
 if [ $CURRENT == $NORMAL ]; then
     NEW_SIZE=$GLASSES_OFF
