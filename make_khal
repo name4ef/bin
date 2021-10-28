@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# macos:
+# brew install cpanm
+# cpanm install JSON
+#
+# ~/.local/share/khal/calendars/private
+# [calendars]
+# [[private]]
+# path = ~/.local/share/khal/calendars/private
+#
+set -e
+
+rm -f $HOME/.local/share/khal/calendars/private/*
+
+export-ical_my.pl +SCHEDULED -COMPLETED -DELETED \
+    | khal import --batch
+khal interactive
