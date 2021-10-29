@@ -3,6 +3,9 @@
 # macos:
 # brew install cpanm
 # cpanm install JSON
+# 
+# gentoo:
+# emerge -av dev-perl/JSON
 #
 # ~/.local/share/khal/calendars/private
 # [calendars]
