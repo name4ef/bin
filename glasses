@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-# Toggle font size in alacritty terminal when work with (or without) glasses
+# Simple solution for switch alacritty terminal font size (when work with
+# or without glasses)
 
 CONFIG=~/.alacritty.yml
 CURRENT=$(grep "^  size:" ${CONFIG}|cut -d ":" -f 2|cut -d " " -f 2)
 NORMAL=12.5
 
-if [ "$1" == "-B" ]; then # for Big monitor
-    GLASSES_OFF=72.5
+if [ "$1" == "-B" ]; then
+    GLASSES_OFF=29.5
 else
-    GLASSES_OFF=27
+    GLASSES_OFF=17
 fi
 
 if [ $CURRENT == $NORMAL ]; then
@@ -18,4 +19,6 @@ else
     NEW_SIZE=$NORMAL
 fi
 
-sed -i "s/  size: .*/  size: ${NEW_SIZE}/" ${CONFIG} # tested at macos
+# TODO testing in Linux environment
+sed "s/  size: .*/  size: ${NEW_SIZE}/" ${CONFIG} > ${CONFIG}.new \
+    && (cat ${CONFIG}.new > ${CONFIG}; rm ${CONFIG}.new)
