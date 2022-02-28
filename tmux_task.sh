@@ -8,7 +8,6 @@ COLUMNS=$1
 
 if task active &>/dev/null; then
     echo -n "#[bg=black fg=white]"
-
     TASK=$(task rc.verbose:nothing rc.defaultwidth:$MAX_WIDTH tmux\
         | head -1 | sed 's/  */ /g' | cut -d ' ' -f 2-)
     LENGTH=$(echo -n $TASK | wc -m)
