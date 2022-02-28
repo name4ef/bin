@@ -15,6 +15,6 @@ echo -n "#[bg=black fg=white]"
 
 if task active &>/dev/null; then
     TASK=$(task rc.verbose:nothing rc.defaultwidth:$DEFAULTWIDTH tmux\
-        |head -1 |cut -d ' ' -f 2-)
+        |head -1 |sed 's/  */ /g' |cut -d ' ' -f 2-)
     echo "${TASK}${POSTFIX}"
 fi
