@@ -4,9 +4,9 @@ MIN_COLUMNS_SIZE=82
 
 COLUMNS=$1
 
-echo -n "#[bg=black fg=green]"
-
 if mpc|grep -q playing; then
+    echo -n "#[bg=black fg=green]"
+
     if (( $COLUMNS <= $MIN_COLUMNS_SIZE )); then
         #echo "■ ⏏ "
         echo "▶ "

@@ -1,20 +1,24 @@
 #!/usr/bin/env bash
 
 MIN_COLUMNS_SIZE=82
-DEFAULTWIDTH=60
-POSTFIX=" "
+MIN_TASK_SIZE=32
+MAX_WIDTH=60
 
 COLUMNS=$1
 
-if (( $COLUMNS <= $MIN_COLUMNS_SIZE )); then
-    DEFAULTWIDTH=32
-    POSTFIX="... "
-fi
-
-echo -n "#[bg=black fg=white]"
-
 if task active &>/dev/null; then
-    TASK=$(task rc.verbose:nothing rc.defaultwidth:$DEFAULTWIDTH tmux\
-        |head -1 |sed 's/  */ /g' |cut -d ' ' -f 2-)
-    echo "${TASK}${POSTFIX}"
+    echo -n "#[bg=black fg=white]"
+
+    TASK=$(task rc.verbose:nothing rc.defaultwidth:$MAX_WIDTH tmux\
+        | head -1 | sed 's/  */ /g' | cut -d ' ' -f 2-)
+    LENGTH=$(echo -n $TASK | wc -m)
+    if (( $COLUMNS <= $MIN_COLUMNS_SIZE )); then
+        if (( $LENGTH > $MIN_TASK_SIZE)); then
+            echo "$(echo $TASK | cut -c 1-$MIN_TASK_SIZE)... "
+        else
+            echo "$TASK "
+        fi
+    else
+        echo "$TASK "
+    fi
 fi
