@@ -5,18 +5,21 @@
 
 CONFIG=~/.alacritty.yml
 CURRENT=$(grep "^  size:" ${CONFIG}|cut -d ":" -f 2|cut -d " " -f 2)
-NORMAL=12.5
 
-if [ "$1" == "-B" ]; then
-    GLASSES_OFF=29.5
-else
-    GLASSES_OFF=17
-fi
+SIZE_0=12.5
+SIZE_9=17.0
+SIZE_8=29.5
 
-if [ $CURRENT == $NORMAL ]; then
-    NEW_SIZE=$GLASSES_OFF
+MODE=s"$1"
+
+if [ $MODE == s"0" ]; then
+    NEW_SIZE=$SIZE_0
+elif [ $MODE == s"9" ]; then
+    NEW_SIZE=$SIZE_9
+elif [ $MODE == s"8" ]; then
+    NEW_SIZE=$SIZE_8
 else
-    NEW_SIZE=$NORMAL
+    echo "Usage: $0 <0|9|8>"
 fi
 
 # TODO testing in Linux environment
