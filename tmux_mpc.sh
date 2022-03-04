@@ -16,7 +16,9 @@ if mpc|grep -q playing; then
         MPC_LINE_SIZE=$(echo $MPC_LINE | wc -m)
         if (( $COLUMNS <= $MID_COLUMNS_SIZE )); then
             if (( $MPC_LINE_SIZE > $MAX_WIDTH )); then
-                MPC_LINE_TRIM=$(echo $MPC_LINE | cut -c 1-$MAX_WIDTH)
+                MPC_LINE_TRIM=$(echo $MPC_LINE \
+                    | cut -c 1-$MAX_WIDTH \
+                    | sed 's/ $//g')
                 echo "$MPC_LINE_TRIM... "
             else
                 echo "$MPC_LINE "
