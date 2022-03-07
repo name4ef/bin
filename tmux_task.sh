@@ -26,9 +26,7 @@ if task active &>/dev/null; then
                     TRIM_SIZE=$MIN_TASK_SIZE
                 fi
             fi
-            TASK_TITLE=$(echo $TASK_TITLE \
-                | cut -d ' ' -f 2- \
-                | cut -c 1-$TRIM_SIZE )
+            TASK_TITLE=$(echo $TASK_TITLE | cut -c 1-$TRIM_SIZE)
             TASK_TITLE="$TASK_TITLE..."
         fi
     fi
