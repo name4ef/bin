@@ -8,7 +8,7 @@ MID_TASK_SIZE=40
 COLUMNS=$1
 
 if task active &>/dev/null; then
-    TASK=$(task rc.verbose:nothing tmux\
+    TASK=$(task rc.verbose:nothing rc.defaultwidth:0 tmux\
         | head -1 | sed 's/  */ /g' | cut -d ' ' -f 2-)
     TASK_SIZE=$(echo -n $TASK | wc -m)
     TASK_TITLE=$(echo $TASK \
@@ -26,7 +26,7 @@ if task active &>/dev/null; then
                     TRIM_SIZE=$MIN_TASK_SIZE
                 fi
             fi
-            TASK_TITLE=$(echo $TASK_TITLE | cut -c 1-$TRIM_SIZE)
+            TASK_TITLE=$(echo $TASK_TITLE|cut -c 1-$TRIM_SIZE|sed 's/ *$//')
             TASK_TITLE="$TASK_TITLE..."
         fi
     fi
