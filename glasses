@@ -22,6 +22,5 @@ else
     echo "Usage: $0 <0|9|8>"
 fi
 
-# TODO testing in Linux environment
 sed "s/  size: .*/  size: ${NEW_SIZE}/" ${CONFIG} > ${CONFIG}.new \
     && (cat ${CONFIG}.new > ${CONFIG}; rm ${CONFIG}.new)
