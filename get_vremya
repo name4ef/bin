@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+BASE_URL="http://1tv.ru/news/issue"
+
+if ! which yt-dlp 1>/dev/null; then
+    echo Error: yt-dlp not found
+    exit -1
+fi
+
+D=$(date +%d)
+DATE=$(date +%Y-%m-)$(($D-1))
+DOWNLOADS="./downloads"
+URL="${BASE_URL}/${DATE}/21:00"
+OUT="${DOWNLOADS}/vremya_${DATE}.mp4"
+
+yt-dlp ${URL} -o ${OUT}
