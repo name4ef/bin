@@ -20,6 +20,7 @@ elif [ $MODE == s"8" ]; then
     NEW_SIZE=$SIZE_8
 else
     echo "Usage: $0 <0|9|8>"
+    exit -1
 fi
 
 sed "s/  size: .*/  size: ${NEW_SIZE}/" ${CONFIG} > ${CONFIG}.new \
