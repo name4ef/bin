@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+DAY=$(timew :day mt worktime)
+WEEK=$(WORKTIME_FORMAT=hour timew :week mt worktime)
+MONTH=$(WORKTIME_FORMAT=hour timew :month mt worktime)
+
+echo -n "[${DAY}/${WEEK}/${MONTH}]"

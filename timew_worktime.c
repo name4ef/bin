@@ -10,6 +10,7 @@
 #include <cjson/cJSON.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
 
 #define BUF_SIZE (1024*1024)
 #define ISO_UTC "%Y%m%dT%H%M%SZ"
@@ -37,6 +38,7 @@ int main()
     struct tm tm_start, tm_end;
     time_t t_start, t_end, t_total = 0;
     time_t h, m, s;                            /* hours minutes seconds */
+    char *format = NULL;
 
     while (read(0, raw + nr, sizeof(char))) {
         if (is_json_data)
@@ -120,10 +122,17 @@ int main()
     printf("---\nt_total: %ldsec\n", t_total);
     printf("%ldh%ldmin%ldsec\n", h, m, s);
 #endif
-    if (h > 0)
-        printf("%ldh%ldmin", h, m);
-    else
-        printf("%ldmin", m);
+    format = getenv("WORKTIME_FORMAT");
+    PRINTF("format: %s\n", format);
+    if (format) {
+        if (!strcmp(format, "hour"))
+            printf("%ld", h);
+    } else {
+        if (h > 0)
+            printf("%ldh%ldmin", h, m);
+        else
+            printf("%ldmin", m);
+    }
 end:
 	cJSON_Delete(buf_json);
 	return rc;
