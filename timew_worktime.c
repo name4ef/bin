@@ -15,8 +15,9 @@
 #define ISO_UTC "%Y%m%dT%H%M%SZ"
 #define ALLOWED_SPACE (60*60)                    /* one hour in seconds */
 
+// TODO improve macros for work with only one argument "format"
 #ifdef DEBUG
-#define PRINTF(format, ...) printf (format, __VA_ARGS__)
+#define PRINTF(format, ...) printf(format, __VA_ARGS__)
 #else
 #define PRINTF(format, ...)
 #endif
@@ -83,16 +84,19 @@ int main()
                     && strptime(start->valuestring, ISO_UTC, &tm_start))
             {
                 t_start = mktime(&tm_start);
+                /* If space between end of previous piece and start of
+                 * next is low than ALLOWED_SPACE adding it to total
+                 * time too */
+                if ((t_start - t_end) < ALLOWED_SPACE) {
+                    t_total += t_start - t_end;
+                    PRINTF("added space between\n", NULL);
+                    PRINTF("t_total: %ldmin\n", t_total/60);
+                }
                 if (cJSON_IsString(end)
                         && strptime(end->valuestring, ISO_UTC, &tm_end))
                 {
                     PRINTF("from %s to %s\n", start->valuestring,
                             end->valuestring);
-                    /* If space between end of previous piece and start of
-                     * next is low than ALLOWED_SPACE adding it to total
-                     * time too */
-                    if ((t_start - t_end) < ALLOWED_SPACE)
-                        t_total += t_start - t_end;
                     t_end = mktime(&tm_end);
                 } else {
                     PRINTF("from %s to %s\n", start->valuestring, "now");
@@ -104,7 +108,7 @@ int main()
             t_total += t_end - t_start;
             PRINTF("t_start: %ld\n", t_start);
             PRINTF("t_end: %ld\n", t_end);
-            PRINTF("t_total: %ldsec\n", t_total);
+            PRINTF("t_total: %ldmin\n", t_total/60);
         } else {
             fprintf(stderr, "getdate_err: %d\n", getdate_err);
         }
