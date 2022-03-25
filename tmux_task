@@ -29,7 +29,13 @@ sec_to_hms()                                 # hsm - hours minutes seconds
     M=$((($input - $H*3600) / 60))
     S=$(($input - $H*3600 - $M*60))
 
-    echo -n "${H}h${M}min"
+    if (( $M == 0 )); then
+        echo -n "${H}h"
+    elif (( $H == 0 )); then
+        echo -n "${M}min"
+    else
+        echo -n "${H}h${M}min"
+    fi
 }
 
 if ! task active &>/dev/null; then
