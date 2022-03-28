@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sleep 4
+/usr/bin/adb forward tcp:6600 tcp:6600
+/usr/bin/adb forward tcp:6100 tcp:2222

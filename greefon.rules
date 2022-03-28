@@ -1,0 +1,4 @@
+ACTION=="add", SUBSYSTEM=="usb", \
+       ENV{ID_VENDOR_ID}=="0e8d", \
+       ENV{ID_MODEL_ID}=="201c", \
+       RUN+="/bin/su -c /home/efim/.bin/connect_to_greefon - efim"
