@@ -14,6 +14,9 @@ fi
 
 if (( $COLUMNS <= $MIN_COLUMNS_SIZE )) && ! $IS_TASK_ACTIVE; then
     tmux_mpc $MID_COLUMNS_SIZE
+elif (( $COLUMNS > $MIN_COLUMNS_SIZE )) && $IS_TASK_ACTIVE; then
+    tmux_task $COLUMNS
+    tmux_mpc $MID_COLUMNS_SIZE
 else
     tmux_task $COLUMNS
     tmux_mpc $COLUMNS
