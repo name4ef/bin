@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
-sleep 4
-/usr/bin/adb forward tcp:6600 tcp:6600
-/usr/bin/adb forward tcp:6100 tcp:2222
+ACTION=$1
+export TIMEWARRIORDB=$HOME/.timewarrior_officetime
+
+if [ $ACTION == "connected" ]; then
+    timew start
+    sleep 4
+    /usr/bin/adb forward tcp:6600 tcp:6600
+    /usr/bin/adb forward tcp:6100 tcp:2222
+    /usr/bin/adb forward tcp:6200 tcp:5900
+elif [ $ACTION == "disconnected" ]; then
+    timew stop
+fi

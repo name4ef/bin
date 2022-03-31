@@ -1,4 +1,7 @@
 ACTION=="add", SUBSYSTEM=="usb", \
-       ENV{ID_VENDOR_ID}=="0e8d", \
-       ENV{ID_MODEL_ID}=="201c", \
-       RUN+="/bin/su -c /home/efim/.bin/connect_to_greefon - efim"
+       ENV{ID_VENDOR_ID}=="0e8d", ENV{ID_MODEL_ID}=="201c", \
+       RUN+="/bin/su -c '/home/efim/.bin/connect_to_greefon connected' - efim"
+
+ACTION=="remove", SUBSYSTEM=="usb", \
+       ENV{MODALIAS}=="usb:v0E8Dp201C*", \
+       RUN+="/bin/su -c '/home/efim/.bin/connect_to_greefon disconnected' - efim"
