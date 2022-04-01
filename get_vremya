@@ -7,8 +7,7 @@ if ! which yt-dlp 1>/dev/null; then
     exit -1
 fi
 
-D=$(date +%d)
-DATE=$(date +%Y-%m-)$(($D-1))
+DATE=$(date --date='yesterday' +%Y-%m-%d)
 DOWNLOADS="./downloads"
 URL="${BASE_URL}/${DATE}/21:00"
 OUT="${DOWNLOADS}/vremya_${DATE}.mp4"
