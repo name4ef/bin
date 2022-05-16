@@ -10,3 +10,4 @@ task rc.verbose:nothing rc.defaultwidth:0 $PARAMS vim \
         TASK_DESCRIPTION=$(echo $DESCRIPTION_RAW | sed 's/ \[[0-9]*\]$//g')
         echo " * [ ] $TASK_DESCRIPTION #$TASK_UID"
     done
+    echo
