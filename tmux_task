@@ -38,7 +38,7 @@ sec_to_hms()                                 # hsm - hours minutes seconds
     fi
 }
 
-if ! task active &>/dev/null; then
+if ! task +ACTIVE all &>/dev/null; then
     exit 0
 fi
 

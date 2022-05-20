@@ -8,7 +8,7 @@ IS_TASK_ACTIVE=false
 
 COLUMNS=$1
 
-if task active &>/dev/null; then
+if task +ACTIVE all &>/dev/null; then
     IS_TASK_ACTIVE=true
 fi
 

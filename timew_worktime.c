@@ -14,9 +14,9 @@
 
 #define BUF_SIZE (1024*1024)
 #define ISO_UTC "%Y%m%dT%H%M%SZ"
-#define ALLOWED_SPACE (60*60)                    /* one hour in seconds */
+#define ALLOWED_SPACE (0)                                 /* in seconds */
 
-// TODO improve macros for work with only one argument "format"
+/* TODO improve macros for work with only one argument "format" */
 #ifdef DEBUG
 #define PRINTF(format, ...) printf(format, __VA_ARGS__)
 #else
@@ -25,7 +25,7 @@
 
 int main()
 {
-	int rc = EXIT_SUCCESS;
+    int rc = EXIT_SUCCESS;
     char raw[BUF_SIZE];
     char c[1];
     size_t nr = 0, nw = 0, nr_json = 0;        /* numer read (or write) */
@@ -64,16 +64,16 @@ int main()
     PRINTF("write(): %ld\n", nw);
 #endif
     buf_json = cJSON_Parse(raw + start_of_json);
-	if (buf_json == NULL) {
+    if (buf_json == NULL) {
 #ifdef DEBUG
-		const char *error_ptr = cJSON_GetErrorPtr();
-		if (error_ptr != NULL)
-			fprintf(stderr, "Error before: %s\n", error_ptr);
+        const char *error_ptr = cJSON_GetErrorPtr();
+        if (error_ptr != NULL)
+            fprintf(stderr, "Error before: %s\n", error_ptr);
 #endif
-		rc = EXIT_FAILURE;
-		goto end;
-	}
-#ifdef DEBUG 
+        rc = EXIT_FAILURE;
+        goto end;
+    }
+#ifdef DEBUG
     int count = cJSON_GetArraySize(buf_json);
     PRINTF("count: %d\n", count);
 #endif
@@ -134,6 +134,6 @@ int main()
             printf("%ldmin", m);
     }
 end:
-	cJSON_Delete(buf_json);
-	return rc;
+    cJSON_Delete(buf_json);
+    return rc;
 }
