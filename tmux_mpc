@@ -11,7 +11,12 @@ if mpc|grep -q playing; then
     if (( $COLUMNS <= $MIN_COLUMNS_SIZE )); then
         echo -e "\u25b6 "
     else
-        MPC_LINE=$(mpc current -f '%title% (%date%) %artist%'|sed 's/ *$//')
+        if [[ $(mpc current -f '%genre%') == Classical ]]; then
+            MPC_LINE=$(mpc current -f '%composer% - %title%') \
+        else
+            MPC_LINE=$(mpc current -f '%title% (%date%) %artist%' \
+                | sed 's/ *$//')
+        fi
         MPC_LINE_SIZE=$(echo $MPC_LINE | wc -m)
         if (( $COLUMNS <= $MID_COLUMNS_SIZE )); then
             if (( $MPC_LINE_SIZE > $MAX_WIDTH+3 )); then
