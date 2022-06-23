@@ -2,8 +2,29 @@
 
 export TIMEWARRIORDB=$HOME/.timewarrior_officetime
 
-DAY=$(timew :day worktime)
-WEEK=$(WORKTIME_FORMAT=hour timew :week worktime)
-MONTH=$(WORKTIME_FORMAT=hour timew :month worktime)
+period_to_hms()
+{
+    period=$1 # TODO check available values
+    PERIOD=$(timew :${period} day \
+        | grep Available \
+        | sed 's/ *$//' | rev | cut -d ' ' -f 1 | rev)
+    if [[ x$PERIOD == "x" ]]; then
+        echo -n "+$(timew :${period} worktime)"
+        return
+    fi
+    PERIOD_H=$(echo -n $PERIOD | cut -d ':' -f 1)
+    PERIOD_M=$(echo -n $PERIOD | cut -d ':' -f 2 | sed 's/^0//g')
+    PERIOD_S=$(echo -n $PERIOD | cut -d ':' -f 3 | sed 's/^0//g')
+    if (( $PERIOD_H == 0 )); then
+        PERIOD="${PERIOD_M}min"
+    else
+        PERIOD="${PERIOD_H}"
+    fi
+    echo -n $PERIOD
+}
+
+DAY=$(period_to_hms day)
+WEEK=$(period_to_hms week)
+MONTH=$(period_to_hms month)
 
 echo -n "[${DAY}/${WEEK}/${MONTH}]"
