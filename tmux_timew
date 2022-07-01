@@ -9,16 +9,25 @@ period_to_hms()
         | grep Available \
         | sed 's/ *$//' | rev | cut -d ' ' -f 1 | rev)
     if [[ x$PERIOD == "x" ]]; then
-        echo -n "+$(timew :${period} worktime)"
+        PERIOD=$(WORKTIME_FORMAT=hour timew :${period} worktime)
+        if (( $PERIOD == 0 )); then
+            echo -n "$PERIOD"
+        else
+            echo -n "+$PERIOD"
+        fi
         return
     fi
     PERIOD_H=$(echo -n $PERIOD | cut -d ':' -f 1)
     PERIOD_M=$(echo -n $PERIOD | cut -d ':' -f 2 | sed 's/^0//g')
     PERIOD_S=$(echo -n $PERIOD | cut -d ':' -f 3 | sed 's/^0//g')
-    if (( $PERIOD_H == 0 )); then
-        PERIOD="${PERIOD_M}min"
+    if (( $PERIOD_H <= 2 )); then
+        if (( $PERIOD_H >= 1 )); then
+            PERIOD="${PERIOD_H}h${PERIOD_M}min"
+        else
+            PERIOD="${PERIOD_M}min"
+        fi
     else
-        PERIOD="${PERIOD_H}"
+        PERIOD="$((${PERIOD_H} + 1))"
     fi
     echo -n $PERIOD
 }
