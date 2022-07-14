@@ -2,25 +2,73 @@
 
 export TIMEWARRIORDB=$HOME/.timewarrior_officetime
 
-period_to_hms()
+min_to_hmin()
 {
-    period=$1 # TODO check available values
-    PERIOD=$(timew :${period} day \
+    read -r input
+    H=$(($input / 60))
+    M=$(($input - $H*60))
+
+    if (( $M == 0 )); then
+        echo -n "${H}h"
+    elif (( $H == 0 )); then
+        echo -n "${M}min"
+    else
+        echo -n "${H}h${M}min"
+    fi
+}
+hmin_to_min()
+{
+    TOTAL_MIN=0
+
+    read -r input
+    i=$input
+    H=$(echo $i | cut -d 'h' -f 1)
+    i=$(echo $i | cut -d 'h' -f 2)
+    M=$(echo $i | cut -d 'n' -f 1 | sed 's/[mi]//g')
+    TOTAL_MIN=$(($M + $H*60))
+
+    echo -n $TOTAL_MIN
+}
+period_to_plus_or_minus()
+{
+    period=$1
+    case $period in
+        "day")
+            so=sod;;
+        "week")
+            so=sow;;
+        "month")
+            so=som;;
+        *)
+            exit -1
+    esac
+
+    SOP=$(task calc $so)                                      # Start Of Period
+    PERIOD=$(timew week $SOP - now \
         | grep Available \
         | sed 's/ *$//' | rev | cut -d ' ' -f 1 | rev)
     if [[ x$PERIOD == "x" ]]; then
-        PERIOD=$(WORKTIME_FORMAT=hour timew :${period} worktime)
-        if (( $PERIOD == 0 )); then
-            echo -n "$PERIOD"
+        PERIOD=$(timew :${period} worktime)
+        if [ $PERIOD == "0" ] && (( $PERIOD == 0 )); then
+            echo -n "_"
         else
-            echo -n "+$PERIOD"
+            if [ $period == "day" ]; then
+                PERIOD=$(echo $PERIOD | hmin_to_min)
+                PERIOD=$(($PERIOD - 480))
+                PERIOD=$(echo $PERIOD | min_to_hmin)
+            fi
+            if (( $(echo $PERIOD | hmin_to_min) > 2*60 )); then
+                echo -n "#[fg=green]+${PERIOD}#[fg=default]"
+            else
+                echo -n "+$PERIOD"
+            fi
         fi
         return
     fi
     PERIOD_H=$(echo -n $PERIOD | cut -d ':' -f 1)
     PERIOD_M=$(echo -n $PERIOD | cut -d ':' -f 2 | sed 's/^0//g')
     PERIOD_S=$(echo -n $PERIOD | cut -d ':' -f 3 | sed 's/^0//g')
-    if (( $PERIOD_H <= 2 )); then
+    if (( $PERIOD_H <= 0 )); then
         if (( $PERIOD_H >= 1 )); then
             PERIOD="${PERIOD_H}h${PERIOD_M}min"
         else
@@ -29,11 +77,23 @@ period_to_hms()
     else
         PERIOD="$((${PERIOD_H} + 1))"
     fi
-    echo -n $PERIOD
+    echo -n "-$PERIOD"
 }
 
-DAY=$(period_to_hms day)
-WEEK=$(period_to_hms week)
-MONTH=$(period_to_hms month)
+DAY=$(period_to_plus_or_minus day)
+
+WEEK=$(period_to_plus_or_minus week)
+if (( $WEEK <= -4 )); then
+    WEEK="#[fg=brightred]${WEEK}#[fg=default]"
+elif (( $WEEK <= -3 )); then
+    WEEK="#[fg=yellow]${WEEK}#[fg=default]"
+fi
+
+MONTH=$(period_to_plus_or_minus month)
+if (( $MONTH <= -5 )); then
+    MONTH="#[fg=brightred]${MONTH}#[fg=default]"
+elif (( $MONTH <= -4 )); then
+    MONTH="#[fg=yellow]${MONTH}#[fg=default]"
+fi
 
 echo -n "[${DAY}/${WEEK}/${MONTH}]"
