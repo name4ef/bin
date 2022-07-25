@@ -33,5 +33,5 @@ if mpc|grep -q playing; then
     fi
 elif mpc|grep -q paused; then
     echo -n "#[bg=black fg=green]"
-    echo -e "\u23f8 "
+    echo -e "\u2389 "
 fi
