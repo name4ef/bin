@@ -9,7 +9,7 @@ COLUMNS=$1
 if mpc|grep -q playing; then
     echo -n "#[bg=black fg=green]"
     if (( $COLUMNS <= $MIN_COLUMNS_SIZE )); then
-        echo -e "\u25b6 "
+        echo -e "\u23f5 "
     else
         if [[ $(mpc current -f '%genre%') == Classical ]]; then
             MPC_LINE=$(mpc current -f '%composer% - %title%') \
@@ -33,5 +33,5 @@ if mpc|grep -q playing; then
     fi
 elif mpc|grep -q paused; then
     echo -n "#[bg=black fg=green]"
-    echo -e "\u25ae\u25ae "
+    echo -e "\u23f8 "
 fi
