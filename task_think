@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+echo
+echo TODAY
+echo -n -----
+task
+echo
+
+echo
+echo TOMORROW
+echo -n --------
+task tomorrow
+echo
+
+echo
+echo AT THIS WEEK
+echo -n ------------
+task thisweek
+echo
+
+echo
+echo AT THIS MONTH
+echo -n -------------
+task thismonth
