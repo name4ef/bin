@@ -11,10 +11,15 @@ if mpc|grep -q playing; then
     if (( $COLUMNS <= $MIN_COLUMNS_SIZE )); then
         echo -e "\u23f5 "
     else
-        if [[ $(mpc current -f '%genre%') == Classical ]]; then
+        GENRE=$(mpc current -f '%genre%')
+        YEAR=$(mpc current -f '%date%')
+        if [[ $GENRE == Classical || $GENRE == "Musique concertante" ]]; then
             MPC_LINE=$(mpc current -f '%composer% - %title%') \
+        elif [[ $YEAR == "" ]]; then
+            MPC_LINE=$(mpc current -f '%title%' | sed 's/ *$//')
         else
-            MPC_LINE=$(mpc current -f '%title% (%date%) %artist%' \
+            MPC_LINE=$(mpc current -f \
+                '%track% %title% (%date%) %album% - %artist%' \
                 | sed 's/ *$//')
         fi
         MPC_LINE_SIZE=$(echo $MPC_LINE | wc -m)
