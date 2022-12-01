@@ -3,22 +3,22 @@
 echo
 echo TODAY
 echo -n "----- "
-task
+task $@
 echo
 
 echo
 echo TOMORROW
 echo -n "-------- "
-task tomorrow
+task $@ tomorrow
 echo
 
 echo
 echo AT THIS WEEK
 echo -n "------------ "
-task thisweek
+task $@ thisweek
 echo
 
 echo
 echo AT THIS MONTH
 echo -n "------------- "
-task thismonth
+task $@ thismonth
